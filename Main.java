@@ -16,7 +16,13 @@ public class Main {
             Scanner fileScanner = new Scanner(new File("mobydick.txt"));
             // Getting all the file content
             String fileContent = fileScanner.useDelimiter("\\A").next();
+
+            fileContent = fileContent.replaceAll("[,:/()”“’;!]", " ");
+            fileContent = fileContent.replaceAll("\\.\\s+", " ");
+            fileContent = fileContent.replaceAll("\\s+", " ");
+
             fileScanner.close();
+
 
             allWords = fileContent.split(" ");
 
@@ -34,5 +40,9 @@ public class Main {
         for(var word: arr) {
             System.out.println(word);
         }
+    }
+
+    public static void stripPonctuation (String word) {
+
     }
 }
