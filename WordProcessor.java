@@ -56,7 +56,8 @@ public class WordProcessor {
      */
     private void displayUniqueWordCount(HashMap<String, Integer> w) {
         for (var o : w.entrySet()) {
-            System.out.println(o.getKey() + " | " + o.getValue());
+
+            System.out.printf(String.format("%-9s \t %d%n", o.getKey(),  o.getValue()));
         }
     }
 
@@ -126,7 +127,7 @@ public class WordProcessor {
      */
     private HashMap<String, Integer> removeIfExists(WordProcessor stopWord) {
 
-        HashMap<String, Integer> result = this.getSortedWordsDesc(this.uniqueWords, this.uniqueWords.size());
+        var result = this.getSortedWordsDesc(this.uniqueWords, this.uniqueWords.size());
 
         for (var sw : stopWord.uniqueWords.entrySet()) {
             result.remove(sw.getKey());
