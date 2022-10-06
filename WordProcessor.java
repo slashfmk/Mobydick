@@ -58,8 +58,8 @@ public class WordProcessor {
      */
     private void displayUniqueWordCount(HashMap<String, Integer> w) {
         for (var o : w.entrySet()) {
-
-            System.out.printf(String.format("%-9s %s \t %d%n", o.getKey(), "----------->",  o.getValue()));
+            if(!o.getKey().equals(" "))
+                System.out.printf(String.format("%-9s %s \t %d%n", o.getKey(), "----------->",  o.getValue()));
         }
     }
 
@@ -82,7 +82,7 @@ public class WordProcessor {
      *
      * @return hashmap
      */
-    public HashMap<String, Integer> getSortedWordAscend() {
+    private HashMap<String, Integer> getSortedWordAscend() {
 
         LinkedHashMap<String, Integer> sortedWords = new LinkedHashMap<>();
         ArrayList<Integer> list = new ArrayList<>();
