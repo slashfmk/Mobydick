@@ -1,8 +1,7 @@
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class WordProcessor {
 
@@ -23,21 +22,6 @@ public class WordProcessor {
         }
     }
 
-    /**
-     * @Description iterate through the entire array of words
-     * and displays on the screen
-     * @Param none
-     * @Return void
-     */
-    public void displayArray() {
-        for (var word : this.allWords) {
-            System.out.println(word);
-        }
-    }
-
-    public void displayOriginaltext() {
-        System.out.println(this.fileContent);
-    }
 
     /**
      * @Description Get rid of all necessary punctuations
@@ -72,8 +56,7 @@ public class WordProcessor {
 
 
     /**
-     *
-     * @param w:HasMap<String, Integer>
+     * @param w: HasMap<String, Integer>
      */
     private void displayUniqueWordCount(HashMap<String, Integer> w) {
         for (var o : w.entrySet()) {
@@ -81,27 +64,55 @@ public class WordProcessor {
         }
     }
 
-    /**
-     * @description
-     * Displays the first 100 most occurent words
-     * @Params none
-     * @return none
-     */
-    public void displayFirst100() {
-       // displayUniqueWordCount(this.selectFirst100());
-    }
-
 
     public void displayUniquenessResult() {
         this.displayUniqueWordCount(this.uniqueWords);
     }
 
+    public void display100SortedDesc() {
+        this.displayUniqueWordCount(this.get100SortedWordDesc());
+    }
 
+    public HashMap<String, Integer> getSortedWordAscend() {
 
-//    public HashMap<String, Integer> selectFirst100() {
-//        return this.uniqueWords.entrySet().stream().map(Map.Entry::getValue).sorted().limit(100);
-//    }
+        LinkedHashMap<String, Integer> sortedWords = new LinkedHashMap<>();
+        ArrayList<Integer> list = new ArrayList<>();
 
+        for (var w : this.uniqueWords.entrySet()) {
+            list.add(w.getValue());
+        }
+
+        Collections.sort(list);
+
+        for (int num : list) {
+            for (var entry : this.uniqueWords.entrySet()) {
+                if (entry.getValue().equals(num)) {
+                    sortedWords.put(entry.getKey(), num);
+                }
+            }
+        }
+
+        return sortedWords;
+    }
+
+    /**
+     * @Description
+     *  Create a descending sorted HashMap of words
+     * @Params none
+     * @return HashMap
+     */
+    public HashMap<String, Integer> get100SortedWordDesc() {
+
+        return this.uniqueWords.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(100)
+                .collect(Collectors.toMap(
+                        e -> e.getKey(),
+                        e -> e.getValue(),
+                        (e1, e2) -> null,
+                        () -> new LinkedHashMap<String, Integer>()
+                ));
+    }
 
     /**
      * @Description process what requires
@@ -110,7 +121,7 @@ public class WordProcessor {
      * @Param none
      * @Return void
      */
-    public void processWord() {
+    private void processWord() {
         stripPonctuation();
         convertToArray();
         wordUniqueness();
