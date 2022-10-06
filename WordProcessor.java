@@ -59,7 +59,7 @@ public class WordProcessor {
     private void displayUniqueWordCount(HashMap<String, Integer> w) {
         for (var o : w.entrySet()) {
 
-            System.out.printf(String.format("%-9s \t %d%n", o.getKey(),  o.getValue()));
+            System.out.printf(String.format("%-9s %s \t %d%n", o.getKey(), "----------->",  o.getValue()));
         }
     }
 
@@ -137,7 +137,10 @@ public class WordProcessor {
         var result = this.getSortedWordsDesc(this.uniqueWords, this.uniqueWords.size());
 
         for (var sw : stopWord.uniqueWords.entrySet()) {
+           // System.out.println("Added: ------- " + sw.getKey().substring(0,1).toUpperCase()+sw.getKey().substring(1).toLowerCase());
             result.remove(sw.getKey());
+            result.remove(sw.getKey().toLowerCase());
+            result.remove(sw.getKey().substring(0,1).toUpperCase()+sw.getKey().substring(1).toLowerCase());
         }
 
         return result;
