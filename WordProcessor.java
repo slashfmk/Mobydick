@@ -24,9 +24,7 @@ public class WordProcessor {
 
 
     /**
-     * @Description Get rid of all necessary punctuations
-     * @Param none
-     * @Return void
+     * @description Get rid of all necessary punctuations
      */
     private void stripPonctuation() {
         // —
@@ -36,9 +34,7 @@ public class WordProcessor {
     }
 
     /**
-     * @Description Convert the file content to an array of words
-     * @Param none
-     * @Return void
+     * @description Convert the file content to an array of words
      */
     private void convertToArray() {
         this.allWords = this.fileContent.split(" ");
@@ -69,8 +65,13 @@ public class WordProcessor {
         this.displayUniqueWordCount(this.uniqueWords);
     }
 
+    /**
+     * @description
+     * Displays the 100 descending sorted words
+     * including the stop-words
+     */
     public void display100SortedDesc() {
-        this.displayUniqueWordCount(this.get100SortedWordDesc());
+        this.displayUniqueWordCount(this.getSortedWordsDesc(this.uniqueWords, 100));
     }
 
     public HashMap<String, Integer> getSortedWordAscend() {
@@ -96,22 +97,57 @@ public class WordProcessor {
     }
 
     /**
-     * @Description
-     *  Create a descending sorted HashMap of words
-     * @Params none
+     *
+     * @description Create a descending sorted HashMap of words
+     * @param limit
+     * @param source
      * @return HashMap
+     *
      */
-    public HashMap<String, Integer> get100SortedWordDesc() {
+    private HashMap<String, Integer> getSortedWordsDesc(HashMap<String, Integer> source, int limit) {
 
-        return this.uniqueWords.entrySet()
+        return source.entrySet()
                 .stream()
-                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(100)
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(limit)
                 .collect(Collectors.toMap(
                         e -> e.getKey(),
                         e -> e.getValue(),
                         (e1, e2) -> null,
                         () -> new LinkedHashMap<String, Integer>()
                 ));
+    }
+
+
+    /**
+     * @param stopWord
+     * @return hashMap
+     * @description Remove keys that match the stop word list
+     */
+    private HashMap<String, Integer> removeIfExists(WordProcessor stopWord) {
+
+        HashMap<String, Integer> result = this.getSortedWordsDesc(this.uniqueWords, this.uniqueWords.size());
+
+        for (var sw : stopWord.uniqueWords.entrySet()) {
+            result.remove(sw.getKey());
+        }
+
+        return result;
+    }
+
+    /**
+     *
+     * @param stopWord
+     * @description
+     * list of the top 100 words without
+     * the stop words
+     * @return HashMap<String, Integer>
+     */
+    public HashMap <String, Integer> getTop100Words(WordProcessor stopWord) {
+        var removedStopWords =  this.removeIfExists(stopWord);
+        var finalResult = getSortedWordsDesc(removedStopWords, 100);
+        this.displayUniqueWordCount(finalResult);
+        return finalResult;
     }
 
     /**
