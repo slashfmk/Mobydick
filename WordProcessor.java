@@ -24,7 +24,8 @@ public class WordProcessor {
 
 
     /**
-     * @description Get rid of all necessary punctuations
+     * @description
+     * Get rid of all necessary punctuations
      */
     private void stripPonctuation() {
         // —
@@ -34,7 +35,8 @@ public class WordProcessor {
     }
 
     /**
-     * @description Convert the file content to an array of words
+     * @description
+     * Convert the file content to an array of words
      */
     private void convertToArray() {
         this.allWords = this.fileContent.split(" ");
@@ -75,6 +77,11 @@ public class WordProcessor {
         this.displayUniqueWordCount(this.getSortedWordsDesc(this.uniqueWords, 100));
     }
 
+
+    /**
+     *
+     * @return hashmap
+     */
     public HashMap<String, Integer> getSortedWordAscend() {
 
         LinkedHashMap<String, Integer> sortedWords = new LinkedHashMap<>();
@@ -142,7 +149,8 @@ public class WordProcessor {
      * @description
      * list of the top 100 words without
      * the stop words
-     * @return HashMap<String, Integer>
+     * @return
+     * HashMap<String, Integer>
      */
     public HashMap <String, Integer> getTop100Words(WordProcessor stopWord) {
         var removedStopWords =  this.removeIfExists(stopWord);
@@ -152,11 +160,10 @@ public class WordProcessor {
     }
 
     /**
-     * @Description process what requires
+     * @description
+     * process what requires
      * get rid of all punctuations
      * and convert to array
-     * @Param none
-     * @Return void
      */
     private void processWord() {
         stripPonctuation();
